@@ -1,11 +1,29 @@
 from __future__ import annotations
 
-
-def approval_required(risk: str, amount_usd: int = 0) -> bool:
-    return risk in {"high", "critical"} or amount_usd >= 50000
+RISK_ORDER = {"low": 1, "medium": 2, "high": 3, "critical": 4}
 
 
-def policy_decision(tool_risks: list[str], amount_usd: int = 0) -> dict:
-    highest = "high" if "high" in tool_risks else "medium" if "medium" in tool_risks else "low"
-    required = approval_required(highest, amount_usd)
-    return {"highest_risk": highest, "approval_required": required, "approver": "VP Customer Success" if required else None}
+def highest_risk(risks: list[str]) -> str:
+    if not risks:
+        return "low"
+    return max(risks, key=lambda item: RISK_ORDER.get(item, 0))
+
+
+def policy_decision(tool_risks: list[str], amount_usd: int = 0, risk_hint: str = "low") -> dict:
+    risk = highest_risk(tool_risks + [risk_hint])
+    approval_required = risk in {"high", "critical"} or amount_usd >= 50000
+    blocked = risk == "critical" and amount_usd >= 250000
+    controls = []
+    if approval_required:
+        controls.append("named business approval")
+    if risk in {"high", "critical"}:
+        controls.extend(["rollback plan", "audit retention", "post-action review"])
+    if amount_usd >= 50000:
+        controls.append("financial controller review")
+    return {
+        "highest_risk": risk,
+        "approval_required": approval_required,
+        "blocked": blocked,
+        "approver": "VP-level business owner" if approval_required else None,
+        "controls": controls,
+    }
