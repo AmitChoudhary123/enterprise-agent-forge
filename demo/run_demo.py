@@ -1,12 +1,10 @@
-from agent_forge import AgentRuntime
+from pathlib import Path
+
+from agent_forge.reports import render_text
+from agent_forge.runtime import AgentRuntime
+from agent_forge.scenarios import load_scenario
 
 if __name__ == "__main__":
-    runtime = AgentRuntime()
-    outcome = runtime.run("Prepare a customer churn action plan", amount_usd=25000)
-    print("Results:")
-    for item in outcome["results"]:
-        print("-", item)
-    print("Policy:", outcome["policy"])
-    print("Audit trail:")
-    for line in outcome["audit_log"]:
-        print("-", line)
+    scenario = load_scenario(Path("configs/scenarios/customer_retention.yml"))
+    outcome = AgentRuntime().run(scenario)
+    print(render_text(outcome))
