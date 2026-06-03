@@ -1,0 +1,12 @@
+name: Customer retention intervention
+domain: customer_success
+request: Prepare a customer churn action plan for a strategic account.
+amount_usd: 25000
+risk_hint: medium
+required_tools:
+  - customer_health
+  - action_plan
+  - knowledge_lookup
+facts:
+  - Strategic account renewal is due in 45 days.
+  - Expansion opportunity depends on product adoption recovery.
