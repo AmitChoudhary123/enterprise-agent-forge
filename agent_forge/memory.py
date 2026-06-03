@@ -7,8 +7,13 @@ from dataclasses import dataclass, field
 class MemoryStore:
     facts: list[str] = field(default_factory=list)
 
+    def seed(self, facts: list[str]) -> None:
+        for fact in facts:
+            self.remember(fact)
+
     def remember(self, fact: str) -> None:
-        self.facts.append(fact)
+        if fact not in self.facts:
+            self.facts.append(fact)
 
     def recall(self, keyword: str) -> list[str]:
         key = keyword.lower()
