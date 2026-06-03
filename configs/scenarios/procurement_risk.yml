@@ -1,0 +1,12 @@
+name: Supplier risk review
+domain: procurement
+request: Review a high-value AI vendor renewal with compliance and concentration risk.
+amount_usd: 125000
+risk_hint: high
+required_tools:
+  - procurement_risk
+  - knowledge_lookup
+  - action_plan
+facts:
+  - Supplier supports a customer-facing AI workflow.
+  - Finance flagged a 17 percent price increase.
