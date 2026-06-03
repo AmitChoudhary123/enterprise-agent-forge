@@ -1,0 +1,12 @@
+name: AI incident response
+domain: incident_management
+request: Triage a production AI answer quality incident impacting customers.
+amount_usd: 0
+risk_hint: high
+required_tools:
+  - incident_triage
+  - knowledge_lookup
+  - action_plan
+facts:
+  - Incident detected by answer quality monitor.
+  - Customer support reported three escalations.
