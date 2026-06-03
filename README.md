@@ -1,73 +1,66 @@
 # Enterprise Agent Forge
 
-Enterprise Agent Forge is a small but useful open-source runtime for building auditable AI agents with tools, memory, policy gates, scenario packs, and reviewable execution reports.
+Enterprise-safe agent runtime with scenario packs, tool governance, approval gates, audit trails, and runnable executive-grade demos.
 
-It is intentionally deterministic by default: you can clone it, run it, understand the control flow, and then plug in real model providers later.
+## Business problem
 
-## Why people should care
+Most agentic AI proofs of concept show autonomy, but enterprises need controlled autonomy. Business workflows require policy checks, named accountability, rollback paths, audit evidence, and clear approval rules before agents can influence customers, vendors, employees, or regulated decisions.
 
-Most agent demos optimize for autonomy. Enterprise teams need something different: autonomy with evidence, approvals, policy checks, incident controls, and an audit trail that leaders can trust.
+## Why it matters
 
-Enterprise Agent Forge gives teams a practical starting point for those conversations.
+Agentic AI will move from copilots to operational workflows. Without governance-by-design, organizations create hidden operational risk: agents take action without approval, tools execute without traceability, and leaders cannot explain what happened after an incident. A credible enterprise agent architecture must make control, evidence, and observability part of the runtime.
 
-## What you can run today
+## Method / solution overview
+
+Enterprise Agent Forge provides a compact reference implementation for safe agent execution:
+
+- YAML scenario packs model repeatable business workflows
+- A deterministic planner selects tools by domain and scenario
+- A tool registry isolates business capabilities from orchestration
+- A policy engine applies risk, approval, financial, and blocked-action controls
+- A memory store captures reusable context
+- Audit events and Markdown/text reports make runs reviewable
+- Tests and CI validate runtime behavior and demo execution
+
+## Results / expected impact
+
+This project helps AI leaders and engineering teams:
+
+- Explain enterprise-safe agent design without relying on slideware
+- Prototype agent operating controls before introducing LLM variability
+- Compare use cases by risk and approval complexity
+- Give recruiters, architects, and stakeholders a runnable example of agentic AI governance
+
+## Repository structure
+
+```text
+agent_forge/              Runtime, CLI, tools, memory, policy, reports
+configs/scenarios/        Customer, procurement, and AI incident scenarios
+demo/                     One-command demo wrapper
+docs/                     Architecture, business case, roadmap, executive POV
+tests/                    Runtime and policy tests
+.github/workflows/        CI workflow
+```
+
+## Setup
 
 ```bash
+python -m venv .venv
 pip install -r requirements.txt
 pytest -q
-python -m agent_forge.cli run --scenario configs/scenarios/customer_retention.yml
+python demo/run_demo.py
+```
+
+Run a specific scenario:
+
+```bash
 python -m agent_forge.cli run --scenario configs/scenarios/procurement_risk.yml --format markdown
-```
-
-The CLI loads a scenario, plans tool calls, executes deterministic business tools, applies policy controls, writes memory, and prints an audit-ready report.
-
-## Features
-
-- YAML scenario packs for reusable business workflows
-- Tool registry with customer, procurement, incident, and knowledge tools
-- Policy engine for approval gates and blocked actions
-- In-memory context store with recall
-- Audit trail and Markdown report generation
-- Tests and CI for all core behavior
-- Extension docs for adding tools, policies, and model adapters
-
-## Example output
-
-```text
-Scenario: Customer retention intervention
-Risk: medium
-Approval required: False
-Tools: customer_health, action_plan, knowledge_lookup
-Outcome: Ready for customer-success action with monitored follow-up.
-```
-
-## Architecture
-
-```text
-Scenario YAML -> AgentRuntime -> Planner -> ToolRegistry -> PolicyEngine -> MemoryStore -> AuditTrail -> Report
-```
-
-## Repository map
-
-```text
-agent_forge/            Runtime, CLI, policy, tools, reports
-configs/scenarios/      Runnable enterprise workflow scenarios
-demo/                   One-command demo wrapper
-docs/                   Architecture, extension, model adapter, governance docs
-tests/                  Unit and scenario tests
 ```
 
 ## Roadmap
 
-- Optional OpenAI/Ollama model planner adapters
-- JSON trace export for observability tools
-- FastAPI service wrapper
-- More domain scenario packs: legal, finance, HR, healthcare, telecom
-- GitHub Pages documentation site
-
-## Who this is for
-
-- AI engineers building enterprise-safe agents
-- Architects designing agentic operating models
-- Data/AI leaders who need governance-by-design examples
-- Consultants explaining how agentic AI moves from demo to production
+- Add OpenAI and Ollama planner adapters while keeping policy deterministic
+- Add JSON trace export for observability platforms
+- Add FastAPI service mode
+- Add domain tool packs for finance, legal, HR, and customer operations
+- Publish GitHub Pages documentation with example reports
